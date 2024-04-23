@@ -128,6 +128,7 @@ func (a *AuthorityMenuApi) AddBaseMenu(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
+	global.GVA_LOG.Info("menu:", zap.Any("menu", menu))
 	err = utils.Verify(menu, utils.MenuVerify)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
