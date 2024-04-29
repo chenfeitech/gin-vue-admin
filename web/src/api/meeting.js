@@ -44,8 +44,40 @@ export const deleteRoom = (data) => {
 // 管理会议api
 export const getMeetingList = (params) => {
   return service({
-    url: '/meeting/listMeetings',
+    url: '/meeting/listMeeting',
     method: 'get',
     params
+  })
+}
+
+export const addMeeting = (data) => {
+  return service({
+    url: '/meeting/addMeeting',
+    method: 'post',
+    data
+  })
+}
+
+export const queryMeetingById = (params) => {
+  return service({
+    url: '/meeting/queryMeeting',
+    method: 'get',
+    params
+  })
+}
+
+export const updateMeeting = (data) => {
+  return service({
+    url: '/meeting/updateMeeting',
+    method: 'put',
+    data
+  })
+}
+
+export const delMeeting = (data) => {
+  return service({
+    url: '/meeting/delMeeting',
+    method: 'delete',
+    data
   })
 }

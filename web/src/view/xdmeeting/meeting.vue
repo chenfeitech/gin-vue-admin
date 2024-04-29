@@ -23,26 +23,32 @@
 
         <el-table-column
           align="left"
-          label="会议室名称"
-          prop="name"
+          label="会议室ID"
+          prop="room_id"
           width="120"
         />
         <el-table-column
           align="left"
-          label="会议室说明"
-          prop="roomDesc"
+          label="会议说明"
+          prop="meeting_title"
           width="120"
         />
         <el-table-column
           align="left"
-          label="会议室容量"
-          prop="posNum"
+          label="开始时间"
+          prop="start_time"
           width="120"
         />
         <el-table-column
           align="left"
-          label="会议室类型"
-          prop="roomType"
+          label="结束时间"
+          prop="end_time"
+          width="120"
+        />
+        <el-table-column
+          align="left"
+          label="预定者"
+          prop="user"
           width="120"
         />
         <el-table-column
@@ -139,11 +145,11 @@
 
 <script setup>
 import {
-  getRoomList,
-  createRoom,
-  getRoomById,
-  updateRoom,
-  deleteRoom
+  getMeetingList,
+  addMeeting,
+  queryMeetingById,
+  updateMeeting,
+  delMeeting
 } from '@/api/meeting'
 import WarningBar from '@/components/warningBar/warningBar.vue'
 import { ref } from 'vue'
@@ -177,7 +183,7 @@ const handleCurrentChange = (val) => {
 
 // 查询
 const getTableData = async() => {
-  const table = await getRoomList({ page: page.value, pageSize: pageSize.value })
+  const table = await getMeetingList({ page: page.value, pageSize: pageSize.value })
   if (table.code === 0) {
     tableData.value = table.data.list
     total.value = table.data.total
@@ -191,7 +197,7 @@ getTableData()
 const dialogFormVisible = ref(false)
 const type = ref('')
 const updateCustomer = async(row) => {
-  const res = await getRoomById({ ID: row.ID })
+  const res = await queryMeetingById({ ID: row.ID })
   type.value = 'update'
   if (res.code === 0) {
     form.value = res.data.room
@@ -213,7 +219,7 @@ const deleteCustomer = async(row) => {
     cancelButtonText: '取消',
     type: 'warning'
   }).then(async() => {
-    const res = await deleteRoom({ ID: row.ID })
+    const res = await delMeeting({ ID: row.ID })
     if (res.code === 0) {
       ElMessage({
         type: 'success',
@@ -230,13 +236,13 @@ const enterDialog = async() => {
   let res
   switch (type.value) {
     case 'create':
-      res = await createRoom(form.value)
+      res = await addMeeting(form.value)
       break
     case 'update':
-      res = await updateRoom(form.value)
+      res = await updateMeeting(form.value)
       break
     default:
-      res = await createRoom(form.value)
+      res = await addMeeting(form.value)
       break
   }
 
