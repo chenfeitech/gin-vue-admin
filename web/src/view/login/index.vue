@@ -4,7 +4,7 @@
     class="w-full h-full relative"
   >
     <div
-      class="rounded-lg flex items-center justify-evenly w-full h-full md:w-screen md:h-screen md:bg-[#194bfb]"
+      class="rounded-lg flex items-center justify-evenly w-full h-full md:w-screen md:h-screen md:bg-[#194bfb] bg-white"
     >
       <div class="md:w-3/5 w-10/12 h-full flex items-center justify-evenly">
         <div class="oblique h-[130%] w-3/5 bg-white dark:bg-slate-900 transform -rotate-12 absolute -ml-52" />
@@ -108,7 +108,7 @@
     <BottomInfo class="left-0 right-0 absolute bottom-3 mx-auto  w-full z-20">
       <div class="links items-center justify-center gap-2 hidden md:flex">
         <a
-          href="http://doc.henrongyi.top/"
+          href="https://www.gin-vue-admin.com/"
           target="_blank"
         >
           <img
@@ -224,20 +224,28 @@ const login = async() => {
 }
 const submitForm = () => {
   loginForm.value.validate(async(v) => {
-    if (v) {
-      const flag = await login()
-      if (!flag) {
-        loginVerify()
-      }
-    } else {
+    if (!v) {
+      // 未通过前端静态验证
       ElMessage({
         type: 'error',
         message: '请正确填写登录信息',
         showClose: true,
       })
-      loginVerify()
+      await loginVerify()
       return false
     }
+
+    // 通过验证，请求登陆
+    const flag = await login()
+
+    // 登陆失败，刷新验证码
+    if (!flag) {
+      await loginVerify()
+      return false
+    }
+
+    // 登陆成功
+    return true
   })
 }
 
@@ -247,7 +255,7 @@ const checkInit = async() => {
   if (res.code === 0) {
     if (res.data?.needInit) {
       userStore.NeedInit()
-      router.push({ name: 'Init' })
+      await router.push({name: 'Init'})
     } else {
       ElMessage({
         type: 'info',

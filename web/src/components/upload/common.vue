@@ -1,11 +1,12 @@
 <template>
   <div>
     <el-upload
-      :action="`${path}/fileUploadAndDownload/upload`"
+      :action="`${getBaseUrl()}/fileUploadAndDownload/upload`"
       :before-upload="checkFile"
       :on-error="uploadError"
       :on-success="uploadSuccess"
       :show-file-list="false"
+      multiple
       class="upload-btn"
     >
       <el-button type="primary">普通上传</el-button>
@@ -18,13 +19,13 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { isVideoMime, isImageMime } from '@/utils/image'
+import { getBaseUrl } from '@/utils/format'
 
 defineOptions({
   name: 'UploadCommon',
 })
 
 const emit = defineEmits(['on-success'])
-const path = ref(import.meta.env.VITE_BASE_API)
 
 const fullscreenLoading = ref(false)
 

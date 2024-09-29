@@ -2,7 +2,7 @@
   <el-sub-menu
     ref="subMenu"
     :index="routerInfo.name"
-    class="gva-sub-menu dark:text-slate-300"
+    class="gva-sub-menu dark:text-slate-300 relative"
   >
     <template #title>
       <div
@@ -52,14 +52,16 @@ const isCollapse = inject('isCollapse', {
   default: false,
 })
 
-const sideHeight = computed(() => config.value.layout_side_item_height + 'px')
+const sideHeight = computed(() => {
+  return  config.value.layout_side_item_height + 'px'
+})
 
 </script>
 
 <style lang="scss">
 .gva-sub-menu{
   .el-sub-menu__title{
-    height: v-bind('sideHeight');
+    height: v-bind('sideHeight') !important;
   }
 }
 </style>
